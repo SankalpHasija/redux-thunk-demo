@@ -17,7 +17,6 @@ export const productReducer = (state = initialState, action) => {
     case FETCH_PRODUCT_FAILURE:
       return {loading: false, products: [], error: action.payload}
 
-
     default:
       return state
   }

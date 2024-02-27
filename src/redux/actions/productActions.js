@@ -1,23 +1,50 @@
-export const FETCH_PRODUCT_REQUEST = 'FETCH_PRODUCT_REQUEST'
-export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
-export const FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE'
+export const FETCH_PRODUCT_REQUEST = "FETCH_PRODUCT_REQUEST"
+export const FETCH_PRODUCT_SUCCESS = "FETCH_PRODUCT_SUCCESS"
+export const FETCH_PRODUCT_FAILURE = "FETCH_PRODUCT_FAILURE"
 
 export const fetchProductsRequest = () => {
-  return{
-    type: FETCH_PRODUCT_REQUEST
-  }
+	return {
+		type: FETCH_PRODUCT_REQUEST,
+	}
 }
 
 export const fetchProductsSuccess = (products) => {
-  return{
-    type: FETCH_PRODUCT_SUCCESS,
-    payload: products
-  }
+	return {
+		type: FETCH_PRODUCT_SUCCESS,
+		payload: products,
+	}
 }
 
 export const fetchProductsFailure = (errorMsg) => {
-  return{
-    type: FETCH_PRODUCT_FAILURE,
-    payload: errorMsg
-  }
+	return {
+		type: FETCH_PRODUCT_FAILURE,
+		payload: errorMsg,
+	}
+}
+
+// it will give the error that Actions must be plain objects. Use custom middleware for async actions
+// export const fetchProducts = async () => {
+//     const response = await fetch("https://fakestoreapi.com/products?limit=3")
+//     const data = await response.json()
+//     return {
+//       type: FETCH_PRODUCT_SUCCESS,
+//       payload: data
+//     }
+// }
+
+export const fetchProducts = () => {
+	return async (dispatch, getState) => {
+		// In a Redux Thunk function, the dispatch parameter is a function provided by Redux that allows you to dispatch actions to the Redux store. The getState parameter is a function that allows you to access the current state of the Redux store.
+		// console.log(dispatch, getState)
+		try {
+			dispatch(fetchProductsRequest())
+			const response = await fetch("https://fakestoreapi.com/products?limit=3")
+			const data = await response.json()
+			if (data) {
+				dispatch(fetchProductsSuccess(data))
+			}
+		} catch (error) {
+			dispatch(fetchProductsFailure(error.message))
+		}
+	}
 }
