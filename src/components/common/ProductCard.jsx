@@ -1,6 +1,5 @@
 const ProductCard = ({ product, addToCart, removeFromCart, isAddBtn }) => {
 
-	console.log('product render', product.title)
 	const handleButtonClick = () => {
 		if (isAddBtn) {
 			addToCart(product)
