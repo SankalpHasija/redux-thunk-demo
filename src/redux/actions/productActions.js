@@ -36,6 +36,10 @@ export const delayFetchProductRequest = () => (dispatch) => {
 	dispatch(fetchProductsRequest());
 }
 
+
+// other convention for writing the action creators
+// export const fetchProducts = () => async () => {}
+
 export const fetchProducts = () => {
 	return async (dispatch, getState) => {
 		// In a Redux Thunk function, the dispatch parameter is a function provided by Redux that allows you to dispatch actions to the Redux store. The getState parameter is a function that allows you to access the current state of the Redux store.
@@ -57,6 +61,3 @@ export const fetchProducts = () => {
 		}
 	}
 }
-
-// other convention for writing the action creators
-// export const fetchProducts = () => async () => {}
