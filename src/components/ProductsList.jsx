@@ -3,10 +3,9 @@ import ProductCard from "./common/ProductCard"
 import { useDispatch, useSelector } from "react-redux"
 import { AddToCart } from "../redux/actions/actions"
 import {
-	fetchProductsFailure,
 	fetchProductsRequest,
-	fetchProductsSuccess,
 } from "../redux/actions/productActions"
+import store from "../redux/store/store"
 
 const ProductsList = () => {
 	// const [products, setProducts] = useState([])
@@ -30,23 +29,13 @@ const ProductsList = () => {
 		})
 	}
 
-	const fetchProducts = async (limit = 3) => {
-		try {
-			dispatch(fetchProductsRequest())
-			const response = await fetch(
-				`https://fakestoreapi.com/products?limit=${limit}`
-			)
-			const data = await response.json()
-			if (data) {
-				dispatch(fetchProductsSuccess(data))
-			}
-		} catch (error) {
-			dispatch(fetchProductsFailure(error.message))
-		}
-	}
+	// const fetchProducts = async (limit = 3) => {
+		
+	// }
 
 	useEffect(() => {
-		fetchProducts(numberOfProducts)
+		dispatch(fetchProductsRequest(numberOfProducts))
+		// store.dispatch(fetchProductsRequest(numberOfProducts))
 	}, [numberOfProducts])
 
 	const handleAddToCart = useCallback((product) => {
