@@ -24,7 +24,7 @@ const ProductsList = () => {
 
 	useEffect(() => {
 		dispatch(fetchProducts())
-	}, [])
+	}, [dispatch])
 
 	const handleAddToCart = useCallback((product) => {
 		dispatch(AddToCart(product))
