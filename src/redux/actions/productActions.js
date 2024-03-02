@@ -1,35 +1,39 @@
-import {debounce, fork, put, takeEvery, takeLatest, throttle} from "@redux-saga/core/effects"
+import { debounce, fork, put, takeEvery, takeLatest, throttle, call, delay`` } from "@redux-saga/core/effects"
 
 export const FETCH_PRODUCT_REQUEST = 'FETCH_PRODUCT_REQUEST'
 export const FETCH_PRODUCT_SUCCESS = 'FETCH_PRODUCT_SUCCESS'
 export const FETCH_PRODUCT_FAILURE = 'FETCH_PRODUCT_FAILURE'
 
 export const fetchProductsRequest = (limit) => {
-  return{
-    type: FETCH_PRODUCT_REQUEST,
+	return {
+		type: FETCH_PRODUCT_REQUEST,
 		payload: limit
-  }
+	}
 }
 
 export const fetchProductsSuccess = (products) => {
-  return{
-    type: FETCH_PRODUCT_SUCCESS,
-    payload: products
-  }
+	return {
+		type: FETCH_PRODUCT_SUCCESS,
+		payload: products
+	}
 }
 
 export const fetchProductsFailure = (errorMsg) => {
-  return{
-    type: FETCH_PRODUCT_FAILURE,
-    payload: errorMsg
-  }
+	return {
+		type: FETCH_PRODUCT_FAILURE,
+		payload: errorMsg
+	}
 }
 
-function* fetchProducts(e){
+function* fetchProducts(e) {
 	try {
 		// console.log(e);
+		// Forcing API to wait for 2seconds
+		// assuming if there is delay in response in API which has heavy computation 
+		yield delay(2000) 
 		console.log("Fetch Starts")
-		const response = yield fetch(
+		// Applied call method here which will wait till it gets response
+		const response = yield call(fetch,
 			`https://fakestoreapi.com/products?limit=${e.payload}`
 		)
 		const data = yield response.json()
@@ -54,11 +58,11 @@ function* fetchProducts(e){
 //   });
 // }
 
-export default function* rootSaga(){
-	yield takeEvery('FETCH_PRODUCT_REQUEST', fetchProducts);
+export default function* rootSaga() {
+	// yield takeEvery('FETCH_PRODUCT_REQUEST', fetchProducts);
 	// yield throttle('2000','FETCH_PRODUCT_REQUEST', fetchProducts);
 	// yield debounce('200','FETCH_PRODUCT_REQUEST', fetchProducts);
-	// yield takeLatest('FETCH_PRODUCT_REQUEST', fetchProducts);
+	yield takeLatest('FETCH_PRODUCT_REQUEST', fetchProducts);
 }
 
 
